@@ -19,11 +19,7 @@ class DataSrvice {
         
         //let composedUrl = URL(string: "somePath",relativeTo: baseUrl)
         
-        var componentURL = URLComponents()
-        
-        componentURL.scheme = "https"
-        componentURL.host = "api.github.com"
-        componentURL.path = "/gists/public"
+        var componentURL = createUrlComponents(path: "/gists/public")
         
         guard let validUrl = componentURL.url else {
             print("URL creation failed")
