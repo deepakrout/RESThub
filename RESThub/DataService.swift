@@ -53,4 +53,55 @@ class DataSrvice {
         // print(composedUrl?.absoluteString ?? "Relative URL failed...")
         // print(componentURL.url!)
     }
+    
+    func createNewGist(completion: @escaping (Result<Any, Error>) -> Void) {
+        let postComponents = createUrlComponents(path: "/gists")
+        
+        guard let composedURL = postComponents.url else {
+            print ("URL creation failed...")
+            return
+        }
+        
+        var postRequest  = URLRequest(url: composedURL)
+        postRequest.httpMethod = "POST"
+        
+        let newGist = Gist(id: nil, isPublic: true, description: "A brand new gist", files: ["test_file.txt": File(content:"Hello World!")])
+        
+        do {
+            let gistData = try JSONEncoder().encode(newGist)
+            postRequest.httpBody = gistData
+        } catch {
+            print("Gist encoding failed!")
+        }
+        
+        URLSession.shared.dataTask(with: postRequest){ (data, response, error) in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Status code: \(httpResponse.statusCode)")
+            }
+            
+            guard let validData = data, error == nil else {
+                completion(.failure(error!))
+                return
+            }
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: validData, options: [])
+                completion(.success(json))
+            }catch let searializationError {
+                completion(.failure(searializationError))
+            }
+            
+        }.resume()
+        
+    }
+    
+    func createUrlComponents(path: String) -> URLComponents {
+        var componentURL = URLComponents()
+        
+        componentURL.scheme = "https"
+        componentURL.host = "api.github.com"
+        componentURL.path = path
+        return componentURL
+    }
 }

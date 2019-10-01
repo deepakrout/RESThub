@@ -18,16 +18,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let testGist = Gist(id: nil, isPublic: true, description: "Hello World!")
-        
-        do {
-            let gistData = try JSONEncoder().encode(testGist)
-            let stringData = String(data: gistData, encoding: .utf8)
-            print(stringData)
-        } catch {
-            print ("Encoding failed")
-        }
-        
         DataSrvice.shared.fetchGists{ (result) in
             switch result {
                 case .success(let gists):
@@ -43,6 +33,14 @@ class ViewController: UIViewController {
 
     @IBAction func createNewGist(_ sender: UIButton) {
         // TODO: POST a new gist
+        DataSrvice.shared.createNewGist { (result) in
+            switch result {
+            case .success(let json):
+                print(json)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     // MARK: Utilities
