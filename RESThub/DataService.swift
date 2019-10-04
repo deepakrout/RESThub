@@ -61,12 +61,9 @@ class DataSrvice {
         var postRequest  = URLRequest(url: composedURL)
         postRequest.httpMethod = "POST"
         
-        let authString = "garbage:garbage"
-        var authStringBase64 = ""
         
-        if let authData = authString.data(using: .utf8) {
-            authStringBase64 = authData.base64EncodedString()
-        }
+        let authStringBase64 = createAuthCredentials()
+        
         postRequest.setValue("Basic \(authStringBase64)", forHTTPHeaderField: "Authorization")
         
         postRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -107,6 +104,49 @@ class DataSrvice {
     //TODO: PUT Service call
     
     //TODO: DELETE service call
+    
+    func starUnstarGist(id: String, star:Bool, completion: @escaping (Bool)-> Void){
+        
+        let starComponent = createUrlComponents(path: "/gists/\(id)/star")
+        
+        guard let composeURL = starComponent.url else {
+            print("Componenet Composition failed...")
+            return
+        }
+        
+        var starRequest = URLRequest(url: composeURL)
+        
+        starRequest.httpMethod = star == true ? "PUT" : "DELETE"
+        
+        starRequest.setValue("0", forHTTPHeaderField: "Content-Length")
+        starRequest.setValue("Basic \(createAuthCredentials())", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: starRequest) { (data, response, error) in
+            
+            if let httpResponse  = response as? HTTPURLResponse {
+                print ("Staus code: \(httpResponse.statusCode)")
+                
+                if httpResponse.statusCode == 204 {
+                    completion(true)
+                }
+                else {
+                    completion(false)
+                }
+            }
+            
+        }.resume()
+        
+    }
+    
+    func createAuthCredentials() -> String {
+        let authString = "garbage:garbage"
+        var authStringBase64 = ""
+        
+        if let authData = authString.data(using: .utf8) {
+            authStringBase64 = authData.base64EncodedString()
+        }
+        return authStringBase64
+    }
     
     func createUrlComponents(path: String) -> URLComponents {
         var componentURL = URLComponents()
