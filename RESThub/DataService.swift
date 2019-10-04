@@ -36,7 +36,7 @@ class DataSrvice {
                 return
             }
             do {
-               // let json = try JSONSerialization.jsonObject(with: validData, options: [])
+                // let json = try JSONSerialization.jsonObject(with: validData, options: [])
                 let gists = try JSONDecoder().decode([Gist].self, from: validData)
                 completion(.success(gists))
             }catch let seralizatioError {
@@ -103,6 +103,10 @@ class DataSrvice {
         }.resume()
         
     }
+    
+    //TODO: PUT Service call
+    
+    //TODO: DELETE service call
     
     func createUrlComponents(path: String) -> URLComponents {
         var componentURL = URLComponents()
