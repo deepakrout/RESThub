@@ -27,9 +27,9 @@ class ViewController: UIViewController {
                     self.feedGists = gists
                     self.feedTableView.reloadData()
                     
-                    for gist in gists {
+                   /* for gist in gists {
                         print("\(gist)\n")
-                    }
+                    }*/
                 case .failure(let error):
                     print(error)
                 }
@@ -69,6 +69,7 @@ class ViewController: UIViewController {
 // MARK: UITableView Delegate & DataSource
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
+    //return number of row count
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.feedGists.count;
     }
