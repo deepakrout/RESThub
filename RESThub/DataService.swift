@@ -29,12 +29,13 @@ class DataSrvice {
         
         //let composedUrl = URL(string: "somePath",relativeTo: baseUrl)
         
-        var componentURL = createUrlComponents(path: "/gists/public")
+        let componentURL = createUrlComponents(path: "/gists/public")
         
         guard let validUrl = componentURL.url else {
             print("URL creation failed")
             return
         }
+        
         URLSession.shared.dataTask(with: validUrl) { (data, response, error) in
             if let httpResponse = response as? HTTPURLResponse{
                 print ("API status: \(httpResponse.statusCode)")
@@ -71,7 +72,7 @@ class DataSrvice {
         var postRequest  = URLRequest(url: composedURL)
         postRequest.httpMethod = "POST"
         
-        
+        //Create authentication string
         let authStringBase64 = createAuthCredentials()
         
         postRequest.setValue("Basic \(authStringBase64)", forHTTPHeaderField: "Authorization")
@@ -111,10 +112,7 @@ class DataSrvice {
         
     }
     
-    //TODO: PUT Service call
-    
-    //TODO: DELETE service call
-    
+    //Star Unstar method
     func starUnstarGist(id: String, star:Bool, completion: @escaping (Bool)-> Void){
         
         let starComponent = createUrlComponents(path: "/gists/\(id)/star")
