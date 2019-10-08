@@ -56,9 +56,7 @@ class DataSrvice {
             }
         }.resume()
         
-        //  print(baseUrl!)
-        // print(composedUrl?.absoluteString ?? "Relative URL failed...")
-        // print(componentURL.url!)
+  
     }
     
     func createNewGist(completion: @escaping (Result<Any, Error>) -> Void) {
@@ -81,6 +79,7 @@ class DataSrvice {
         
         postRequest.setValue("application/json", forHTTPHeaderField: "Accept")
         
+        //Create new Gist body
         let newGist = Gist(id: nil, isPublic: true, description: "A brand new gist", files: ["test_file.txt": File(content:"Hello World!")])
         
         do {
@@ -112,7 +111,7 @@ class DataSrvice {
         
     }
     
-    //Star Unstar method
+    //Star Unstar method. 10/07/2019
     func starUnstarGist(id: String, star:Bool, completion: @escaping (Bool)-> Void){
         
         let starComponent = createUrlComponents(path: "/gists/\(id)/star")
