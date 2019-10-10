@@ -111,7 +111,7 @@ class DataSrvice {
         
     }
     
-    //Star Unstar method. 10/07/2019
+    //Star Unstar method. 10/09/2019
     func starUnstarGist(id: String, star:Bool, completion: @escaping (Bool)-> Void){
         
         let starComponent = createUrlComponents(path: "/gists/\(id)/star")
