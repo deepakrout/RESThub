@@ -8,6 +8,7 @@
 
 import Foundation
 
+//Gist Data model
 struct Gist: Encodable {
     var id: String?
     var isPublic: Bool
@@ -18,7 +19,7 @@ struct Gist: Encodable {
         case id, description, files, isPublic = "public"
     }
     
-   
+   //Encode 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
