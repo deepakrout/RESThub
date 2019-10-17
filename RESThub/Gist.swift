@@ -19,7 +19,7 @@ struct Gist: Encodable {
         case id, description, files, isPublic = "public"
     }
     
-   //Encode 
+   //Encode 10/17/2019
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
